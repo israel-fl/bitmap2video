@@ -5,4 +5,4 @@ Create mp4 video from Bitmaps or anything you can draw to a hardware accelerated
 
 Currently supports the MP4 container and both AVC/H264 and HEVC/H265.  Easily extensable to other supported formats.  
 
-See the run the sample app or check out [CreateRunnable](app/src/main/java/com/homesoft/bitmap2video/CreateRunnable.java) for an example.
+Run the sample app or check out [CreateRunnable](app/src/main/java/com/homesoft/bitmap2video/CreateRunnable.java) for an example.
