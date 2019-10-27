@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Bitmap2Video</string>
+    <string name="avc">AVC (H264)</string>
+    <string name="hevc">HEVC (H265)</string>
+    <string name="make_it">Make It!</string>
+    <string name="play_it">Play It!</string>
+</resources>
