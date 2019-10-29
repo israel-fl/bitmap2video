@@ -87,7 +87,7 @@ public class FrameEncoder {
 
     /**
      *
-     * @param canvas aquired from getCanvas()
+     * @param canvas acquired from getCanvas()
      */
     public void createFrame(final Canvas canvas) {
         mSurface.unlockCanvasAndPost(canvas);
@@ -100,6 +100,8 @@ public class FrameEncoder {
      * If endOfStream is not set, this returns when there is no more data to drain.  If it
      * is set, we send EOS to the encoder, and then iterate until we see EOS on the output.
      * Calling this with endOfStream set should be done once, right before stopping the muxer.
+     *
+     * Borrows heavily from https://bigflake.com/mediacodec/EncodeAndMuxTest.java.txt
      */
     private void drainEncoder(boolean endOfStream) {
         if (VERBOSE) Log.d(TAG, "drainEncoder(" + endOfStream + ")");
