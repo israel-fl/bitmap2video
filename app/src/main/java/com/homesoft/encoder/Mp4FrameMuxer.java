@@ -58,7 +58,8 @@ public class Mp4FrameMuxer implements FrameMuxer {
         encodedData.limit(bufferInfo.offset + bufferInfo.size);
 
         //This code will break if the encoder supports B frames.
-        //Ideally we would set the
+        //Ideally we would use set the value in the encoder,
+        //don't know how to do that without using OpenGL
         bufferInfo.presentationTimeUs = mFrameUsec * mFrame++;
         mMuxer.writeSampleData(mVideoTrackIndex, encodedData, bufferInfo);
     }
