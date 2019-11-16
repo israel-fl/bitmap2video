@@ -25,7 +25,7 @@ import java.io.IOException;
 
 public class HevcEncoderConfig extends EncoderConfig {
     public static final String MIME_TYPE = MediaFormat.MIMETYPE_VIDEO_HEVC;
-    private static final int IFRAME_INTERVAL = 10;          // 10 seconds between I-frames
+    private static final int IFRAME_INTERVAL = 0;          // 10 seconds between I-frames
 
     private static final int DEFAULT_WIDTH = 320;
     private static final int DEFAULT_HEIGHT = 240;

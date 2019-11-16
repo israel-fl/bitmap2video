@@ -25,7 +25,7 @@ import java.io.IOException;
 
 public class AvcEncoderConfig extends EncoderConfig {
     public static final String MIME_TYPE = "video/avc";
-    private static final int IFRAME_INTERVAL = 10;          // 10 seconds between I-frames
+    private static final int IFRAME_INTERVAL = 0;          // 10 seconds between I-frames
 
     //Defaults from the BigFlake Sample
     private static final int DEFAULT_WIDTH = 320;
