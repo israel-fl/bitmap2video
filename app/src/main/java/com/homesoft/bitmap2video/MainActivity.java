@@ -96,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void createActionBarBorder(final Toolbar toolbar) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            //This is not awesome, but shadowLayer is not supported by hardware acceleration before Pie
+            toolbar.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
         final Resources res = getResources();
         final PathRoundedRectShape shape = new PathRoundedRectShape();
         shape.setCornerRadius(res.getDimension(R.dimen.actionBarCornerRadius));
@@ -111,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 res.getColor(R.color.actionBarShadowColor));
         toolbar.setBackground(insetDrawable);
     }
+
     void done() {
         runOnUiThread(new Runnable() {
             @Override
