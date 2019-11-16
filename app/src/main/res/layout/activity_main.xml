@@ -5,7 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layerType="software"
+        />
     <RadioGroup
         android:id="@+id/codec"
         android:layout_width="match_parent"

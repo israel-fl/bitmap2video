@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="actionBarCornerRadius">4dp</dimen>
+    <dimen name="actionBarInsets">8dp</dimen>
+    <item name="actionBarShadowRadius" type="dimen" format="float">8</item>
+    <item name="actionBarShadowDx" type="dimen" format="float">0</item>
+    <item name="actionBarShadowDy" type="dimen" format="float">0</item>
+</resources>

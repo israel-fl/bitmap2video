@@ -1,17 +1,25 @@
 package com.homesoft.bitmap2video;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Paint;
+import android.graphics.drawable.InsetDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.VideoView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.homesoft.drawable.PathRoundedRectShape;
 import com.homesoft.encoder.AvcEncoderConfig;
 import com.homesoft.encoder.EncoderConfig;
 import com.homesoft.encoder.HevcEncoderConfig;
@@ -32,7 +40,7 @@ import com.homesoft.encoder.HevcEncoderConfig;
  * limitations under the License.
  */
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     private VideoView mVideoPlayer;
     private CreateRunnable mCreateRunnable;
     private Button mPlay;
@@ -43,6 +51,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        createActionBarBorder(toolbar);
         findViewById(R.id.make).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,7 +88,29 @@ public class MainActivity extends Activity {
         }
     }
 
+    private static float getFloat(final Resources res, int id) {
+        TypedValue typedValue = new TypedValue();
+        res.getValue(id, typedValue, true);
+        return typedValue.getFloat();
+    }
 
+
+    private void createActionBarBorder(final Toolbar toolbar) {
+        final Resources res = getResources();
+        final PathRoundedRectShape shape = new PathRoundedRectShape();
+        shape.setCornerRadius(res.getDimension(R.dimen.actionBarCornerRadius));
+        final ShapeDrawable shapeDrawable = new ShapeDrawable(shape);
+        final int insets = res.getDimensionPixelSize(R.dimen.actionBarInsets);
+        final InsetDrawable insetDrawable = new InsetDrawable(shapeDrawable, insets);
+        final Paint paint = shapeDrawable.getPaint();
+        paint.setStyle(Paint.Style.FILL);
+        shape.setClip(true);
+        paint.setShadowLayer(getFloat(res, R.dimen.actionBarShadowRadius),
+                getFloat(res, R.dimen.actionBarShadowDx),
+                getFloat(res, R.dimen.actionBarShadowDy),
+                res.getColor(R.color.actionBarShadowColor));
+        toolbar.setBackground(insetDrawable);
+    }
     void done() {
         runOnUiThread(new Runnable() {
             @Override

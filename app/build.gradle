@@ -20,5 +20,6 @@ android {
 }
 
 dependencies {
-implementation project(path: ':library')
+    implementation project(path: ':library')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }
