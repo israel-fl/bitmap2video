@@ -1,14 +1,14 @@
 # bitmap2video
 ![](bitmap2video.gif)
 
-Generate video from Bitmaps or a Canvas in Android.
+Generate video from a Bitmap, Canvas, or resource drawable in Android.
 
 Create mp4 video from Bitmaps or anything you can draw to a hardware accelerated Canvas.  Pure, simple Android MediaCodec implementation.  Requires no third party libs or NDK.
 
-Currently supports the MP4 container and both AVC/H264 and HEVC/H265.  Easily extensable to other supported formats.  
+Currently supports the MP4 container and both AVC/H264 and HEVC/H265.  Easily extensible to other
+ supported formats.  
 
 Run the sample app or check out
-[CreateRunnable](app/src/main/java/com/homesoft/bitmap2video/CreateRunnable.java)
 and [MainActivity](app/src/main/java/com/homesoft/bitmap2video/MainActivity.java)
 for an example.
 
@@ -30,58 +30,74 @@ Add it in your root build.gradle at the end of repositories:
 
 
 # Initialize library
-Create an `EncoderConfig` object with your specific requirements.
+Simply create a `Muxer` object
 
-```java
-final EncoderConfig encoderConfig;
-encoderConfig = new AvcEncoderConfig(FPS, BITRATE_DEFAULT);
+```kotlin
+val muxer = Muxer(this@MainActivity, "/files/video.mp4")
+// and mux
+muxer.mux(imageArray)
+```
+
+Use callbacks to listen for video completion:
+```kotlin
+muxer.setOnMuxingCompletedListener(object : MuxingCompletionListener {
+    override fun onVideoSuccessful(file: File) {
+        Log.d(TAG, "Video muxed - file path: ${file.absolutePath}")
+    }
+
+    override fun onVideoError(error: Throwable) {
+        Log.e(TAG, "There was an error muxing the video")
+    }
+})
+
+Thread(Runnable {
+    muxer.mux(imageArray, R.raw.bensound_happyrock)
+}).start()
+```
+
+Or use a co-routine by calling `muxAsync`:
+
+```kotlin
+scope.launch {
+    when (val result = muxer.muxAsync(imageArray, R.raw.bensound_happyrock)) {
+        is MuxingSuccess -> {
+            Log.i(TAG, "Video muxed - file path: ${result.file.absolutePath}")
+            onMuxerCompleted()
+        }
+        is MuxingError -> {
+            Log.e(TAG, "There was an error muxing the video")
+            bt_make.isEnabled = true
+        }
+    }
+}
+```
+
+### Passing a custom configuration object 
+```kotlin
+val muxerConfig = MuxerConfig(this, 600, 600, 'video/avc', 3, 1F, 1500000)
+val muxer = Muxer(this@MainActivity, muxerConfig!!)
 // or
-encoderConfig = new HevcEncoderConfig(FPS, BITRATE_DEFAULT);
-
-videoFile = getVideoFile(MainActivity.this, "test.mp4");
-encoderConfig.setPath(videoFile.getAbsolutePath());
-encoderConfig.setFramesPerImage(FRAMES_PER_IMAGE);
-encoderConfig.setHeight(DEFAULT_HEIGHT);
-encoderConfig.setWidth(DEFAULT_WIDTH);
+muxer.setMuxerConfig(muxerConfig)
 ```
 
-Create an instance of the `FrameEncoder` and pass in your
-`EncoderConfig`
+#### Supported configuration
+- File object
+- video width
+- video height
+- Mimetype
+- Frames per image (how many seconds to display each image)
+- Frames per second
+- Bitrate
+- FrameMuxer (only MP4 included currently)
+- IFrame Interval
 
-```java
-final FrameEncoder frameEncoder = new FrameEncoder(context, encoderConfig);
-frameEncoder.start();
-```
+### Acceptable media types:
+The library currently supports `Bitmap`, `Canvas`, and drawable resources (`R.drawable.image1`)
 
-## Encode
-
-```java
-final Bitmap bitmap = BitmapFactory.decodeStream(resources.openRawResource(R.drawable.image1));
-frameEncoder.createFrame(bitmap);
-
-frameEncoder.releaseVideoEncoder();
-
-frameEncoder.releaseMuxer();
-```
-
-## Add audio 
-Set an `AssetFileDescriptor` for your audio track on the
-`EncoderConfig`
-```java
-encoderConfig.setAudioTrackFileDescriptor(getFileDescriptor(context, R.raw.sound_file));
-```
-
-#### Mux in the audio frames
-Muxing of the audio frames needs to happen after you release the
-`MediaCodec`
-
-```java
-frameEncoder.releaseVideoEncoder();
-
-// Mux in the audio after we release the video encoder
-frameEncoder.muxAudioFrames();
-
-frameEncoder.releaseMuxer();
+### Adding Audio
+In order to add audio, pass in an audio track to the `mux` method.
+```kotlin
+muxer.mux(imageArray, R.raw.bensound_happyrock)
 ```
 
 ### Convenience utility functions
