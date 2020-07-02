@@ -9,7 +9,7 @@ Currently supports the MP4 container and both AVC/H264 and HEVC/H265. Easily ext
  supported formats.  
 
 Run the sample app or check out
-and [MainActivity](app/src/main/java/com/homesoft/bitmap2video/MainActivity.java)
+and [MainActivity](https://github.com/israel-fl/bitmap2video/blob/develop/app/src/main/java/com/homesoft/bitmap2video/MainActivity.kt)
 for an example.
 
 # Dependencies
