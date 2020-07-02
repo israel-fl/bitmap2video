@@ -1,2 +1,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.homesoft.encoder" />
+    package="com.homesoft.encoder">
+
+    <application>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.homesoft.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+
+</manifest>
