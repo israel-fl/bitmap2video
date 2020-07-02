@@ -5,7 +5,7 @@ Generate video from a Bitmap, Canvas, or resource drawable in Android.
 
 Create mp4 video from Bitmaps or anything you can draw to a hardware accelerated Canvas.  Pure, simple Android MediaCodec implementation.  Requires no third party libs or NDK.
 
-Currently supports the MP4 container and both AVC/H264 and HEVC/H265.  Easily extensible to other
+Currently supports the MP4 container and both AVC/H264 and HEVC/H265. Easily extensible to other
  supported formats.  
 
 Run the sample app or check out
@@ -22,10 +22,10 @@ Add it in your root build.gradle at the end of repositories:
       }
   	}
   
-  Add to your app dependancies:
+  Add to your app dependencies:
 
     dependencies {
-      implementation 'com.github.dburckh:bitmap2video:1.0.0'
+      implementation 'com.github.israel-fl:bitmap2video:2.0.0'
     }
 
 
