@@ -14,10 +14,9 @@ import android.view.Surface
 import androidx.annotation.RawRes
 import java.io.IOException
 import java.nio.ByteBuffer
-import java.util.concurrent.TimeUnit
 
 /*
- * Copyright (C) 2019 Homesoft, LLC
+ * Copyright (C) 2020 Israel Flores
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

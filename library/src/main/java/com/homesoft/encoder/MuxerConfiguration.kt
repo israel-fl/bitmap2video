@@ -4,7 +4,7 @@ import android.media.MediaFormat
 import java.io.File
 
 /*
- * Copyright (C) 2019 Homesoft, LLC
+ * Copyright (C) 2020 Israel Flores
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 /*
- * Copyright (C) 2019 Homesoft, LLC
+ * Copyright (C) 2020 Israel Flores
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,21 +53,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Basic implementation
-        bt_make.setOnClickListener {
-            bt_make.isEnabled = false
-
-            videoFile = getVideoFile(this@MainActivity, "test.mp4")
-            videoFile?.run {
-                muxerConfig = MuxerConfig(this, 600, 600, mimeType, 3, 1F, 1500000)
-                val muxer = Muxer(this@MainActivity, muxerConfig!!)
-
-//                createVideo(muxer) // using callbacks
-                // or
-                createVideoAsync(muxer) // using co-routines
-            }
-        }
-
         avc.isEnabled = isCodecSupported(mimeType)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
@@ -78,20 +63,28 @@ class MainActivity : AppCompatActivity() {
         setListeners()
     }
 
-    // TODO: Make DRY
     private fun setListeners() {
+        bt_make.setOnClickListener {
+            bt_make.isEnabled = false
+
+            basicVideoCreation()
+        }
+
         avc.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) setCodec(MediaFormat.MIMETYPE_VIDEO_AVC)
         }
+
         hevc.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) setCodec(MediaFormat.MIMETYPE_VIDEO_HEVC)
         }
+
         bt_play.setOnClickListener {
             videoFile?.run {
                 player.setVideoPath(this.absolutePath)
                 player.start()
             }
         }
+
         bt_share.setOnClickListener {
             Log.i(TAG, "Sharing video...")
             muxerConfig?.run {
@@ -107,6 +100,19 @@ class MainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this@MainActivity, "AVC Codec not supported", Toast.LENGTH_SHORT)
                     .show()
+        }
+    }
+
+    // Basic implementation
+    private fun basicVideoCreation() {
+        videoFile = getVideoFile(this@MainActivity, "test.mp4")
+        videoFile?.run {
+            muxerConfig = MuxerConfig(this, 600, 600, mimeType, 3, 1F, 1500000)
+            val muxer = Muxer(this@MainActivity, muxerConfig!!)
+
+            createVideo(muxer) // using callbacks
+            // or
+            createVideoAsync(muxer) // using co-routines
         }
     }
 
@@ -130,14 +136,6 @@ class MainActivity : AppCompatActivity() {
         }).start()
     }
 
-    private fun onMuxerCompleted() {
-        runOnUiThread {
-            bt_make.isEnabled = true
-            bt_play.isEnabled = true
-            bt_share.isEnabled = true
-        }
-    }
-
     // Coroutine approach
     private fun createVideoAsync(muxer: Muxer) {
         scope.launch {
@@ -151,6 +149,14 @@ class MainActivity : AppCompatActivity() {
                     bt_make.isEnabled = true
                 }
             }
+        }
+    }
+
+    private fun onMuxerCompleted() {
+        runOnUiThread {
+            bt_make.isEnabled = true
+            bt_play.isEnabled = true
+            bt_share.isEnabled = true
         }
     }
 }

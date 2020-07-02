@@ -4,9 +4,9 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
     defaultConfig {
-        applicationId "com.homesoft.bitmap2video"
+        applicationId "com.israelfl.bitmap2video"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
